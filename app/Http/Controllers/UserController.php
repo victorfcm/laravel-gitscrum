@@ -25,10 +25,11 @@ class UserController extends Controller
         $sprints = $user->sprints()->take(2);
         $sprintColumns = ['tbody_sprintFavorite',
             'tbody_sprintBacklog',
-            'tbody_sprintProductBacklog'];
+            'tbody_sprintProductBacklog', ];
 
-        $sprints = $sprints->map(function($sprint) use ($sprintColumns){
+        $sprints = $sprints->map(function ($sprint) use ($sprintColumns) {
             $sprint['column'] = $sprintColumns;
+
             return $sprint;
         });
 
@@ -77,6 +78,7 @@ class UserController extends Controller
     public function show($username)
     {
         $user = User::where('username', $username)
+            ->where('provider', Auth::user()->provider)
             ->first();
 
         $activities = $user->activities($user->id);

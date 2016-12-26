@@ -8,24 +8,36 @@ class CreateProviderTypeEnum extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('provider', ['gitlab', 'github'])->default('github');
+            $table->enum('provider', ['gitlab', 'github'])->default('github')->after('provider_id');
+        });
+
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->enum('provider', ['gitlab', 'github'])->default('github')->after('provider_id');
+        });
+
+        Schema::table('issues', function (Blueprint $table) {
+            $table->enum('provider', ['gitlab', 'github'])->default('github')->after('provider_id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('provider');
+        });
+
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->dropColumn('provider');
+        });
+
+        Schema::table('issues', function (Blueprint $table) {
             $table->dropColumn('provider');
         });
     }
